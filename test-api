@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>Test-API-2</title>
+	<style>
+		#demo {
+			font-family: 'Helvetica', Arial, sans-serif;
+		}
+		
+		
+	</style>
+</head>
+<body>
+	<div id="demo">
+		<h1>Stations vélos en libre-service de Nantes Métropole - Disponibilités</h1>
+		<div class="container" v-if="mesDonnees">
+			<div v-if="mesDonnees.length > 0" v-for="mesDonnee in mesDonnees ">
+					{{mesDonnee.fields.name}}
+			
+				</div>
+			</div>
+		</div>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script>
+		const apiURL = 'https://data.nantesmetropole.fr/api/records/1.0/search/?dataset=244400404_stations-velos-libre-service-nantes-metropole-disponibilites&q=&facet=banking&facet=bonus&facet=status&facet=contract_name'
+
+		const demo = new Vue({
+			el: '#demo',
+			data: {
+				mesDonnees: Array,
+			},
+			created: function () {
+				this.fetchData();
+			},
+			methods: {
+				fetchData: async function () {
+					try {
+					  	const response = await axios.get(apiURL);
+						console.log(response.data.records)
+						this.mesDonnees = response.data.records;
+						
+					} catch (error) {
+						console.log(error);
+					}
+				},
+		  	},
+		});
+	</script>
+</body>
+</html>
